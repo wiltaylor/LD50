@@ -35,7 +35,7 @@
 
         buildInputs = with pkgs; [ raylib libGLU glfw mesa xorg.libX11 ];
 
-        buildPhase = "cc main.c card.c -o game -lraylib -lGL -lm -lpthread -ldl -lrt -lX11";
+        buildPhase = "cc main.c card.c player.c gamerender.c -o game -lraylib -lGL -lm -lpthread -ldl -lrt -lX11";
 
         installPhase = ''
           mkdir -p $out/bin
