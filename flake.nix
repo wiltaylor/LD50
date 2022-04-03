@@ -97,7 +97,7 @@
           export EM_CACHE=cache
           mkdir -p build
           ls src/resource -lah
-          emcc  -o build/game.html main.c card.c player.c gamerender.c input.c ai.c gamemode.c -Os -Wall ${raylib-web}/lib/libraylib.a -I ${raylib-web}/includes -s USE_GLFW=3 -s ASYNCIFY -DPLATFORM_WEB --embed-file resource@src/resource
+          emcc  -o build/index.html main.c card.c player.c gamerender.c input.c ai.c gamemode.c -Os -Wall ${raylib-web}/lib/libraylib.a -I ${raylib-web}/includes -s USE_GLFW=3 -s ASYNCIFY -DPLATFORM_WEB --embed-file resource@src/resource --shell-file index.html
         '';
 
         installPhase = ''

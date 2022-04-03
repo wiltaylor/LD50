@@ -57,10 +57,10 @@ int main(void) {
       break;
     }
 
-    if (IsKeyDown(KEY_F11)) {
+   /* if (IsKeyDown(KEY_F11)) {
       CloseWindow();
       break;
-    }
+    }*/
 
     BeginDrawing();
     ClearBackground(DARKGRAY);
