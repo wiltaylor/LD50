@@ -20,8 +20,27 @@ typedef struct {
   int costWood;
   int costIron;
   char* text[5];
+  int index;
 } CardInfo;
+
+typedef struct {
+  int cardId;
+  Texture2D image;
+  int maxHP;
+  int attack;
+  int rngAttack;
+  int index;
+} UnitInfo;
+
+typedef struct {
+  UnitInfo* unitType;
+  int hp;
+} UnitInstance;
 
 void initCards();
 CardInfo* getCard(int id); 
+CardInfo* getPreviewCard();
+void selectPreviewCard(int id);
+
+UnitInstance makeUnitInstance(int id);
 #endif

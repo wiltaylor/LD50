@@ -5,6 +5,8 @@
 #include "player.h"
 #include "gamerender.h"
 #include "constants.h"
+#include "input.h"
+#include "ai.h"
 
 static GameMode gameMode = MAINGAME_MODE;
 
@@ -33,6 +35,7 @@ int main(void) {
 
   initCards();
   initPlayer();
+  initAI();
 
   SetTargetFPS(60);
 
@@ -42,11 +45,14 @@ int main(void) {
     case MAINMENU_MODE:
       mainMenu_Update();
       break;
+    case MAINGAME_MODE:
+      checkGameInput();
+      break;
     default:
       break;
     }
 
-    if (IsKeyDown(KEY_F12)) {
+    if (IsKeyDown(KEY_F11)) {
       CloseWindow();
       break;
     }
