@@ -4,23 +4,30 @@
 
 typedef enum {
   UNIT_CARD = 0,
-  AIUNIT_CARD = 1,
-  CURSE_CARD = 2,
-  BLESS_CARD = 3,
-  BUILDING_CARD = 4,
-  ACTION_CARD = 5
+  WORKER_CARD = 1,
 
 } CardType;
+
+typedef enum {
+  PIKE_MAN = 0,
+  ARCHER = 1,
+  KNIGHT = 2,
+  MAGE = 3,
+  GOBLIN_ARCHER = 4,
+  ORC = 5,
+  SKELLETON_KNIGHT = 6,
+  EVIL_MAGE = 7,
+} UnitType;
 
 typedef struct {
   char* name;
   Texture2D image;
   CardType type;
   int costGold;
-  int costWood;
-  int costIron;
-  char* text[5];
+  char* text[4];
   int index;
+  UnitType unit;
+
 } CardInfo;
 
 typedef struct {
@@ -30,6 +37,7 @@ typedef struct {
   int attack;
   int rngAttack;
   int index;
+  bool front;
 } UnitInfo;
 
 typedef struct {
@@ -42,5 +50,8 @@ CardInfo* getCard(int id);
 CardInfo* getPreviewCard();
 void selectPreviewCard(int id);
 
-UnitInstance makeUnitInstance(int id);
+UnitInstance makeUnitInstance(UnitType id);
+
+CardInfo* drawCardFromDeck();
+
 #endif

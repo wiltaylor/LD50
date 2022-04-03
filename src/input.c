@@ -5,9 +5,19 @@
 #include "player.h"
 #include <stdio.h>
 #include "ai.h"
+#include "gamemode.h"
 
+void checkGameOverInput() {
+  if(IsMouseButtonPressed(0)) {
+    setGameMode(INIT_MODE);
+  }
+}
 void checkGameInput() {
   Vector2 mousePos = { GetMouseX(), GetMouseY() };
+
+  if(IsKeyPressed(KEY_ESCAPE)){
+    resetSelection();
+  }
 
   for(int i = 0; i < MAX_HAND_SIZE; i++) {
     Rectangle cardRec = {
@@ -24,6 +34,7 @@ void checkGameInput() {
         selectPreviewCard(card->index);
 
         if(IsMouseButtonPressed(0)) {
+          castCard(i);
           TraceLog(LOG_WARNING, "Pressed card");
         }
       }
@@ -65,7 +76,7 @@ void checkGameInput() {
       if(unit != NULL && unit->unitType != NULL) {
         selectPreviewCard(unit->unitType->cardId);
         if(IsMouseButtonPressed(0)) {
-          TraceLog(LOG_WARNING, "Clicked player front Unit");
+          selectFrontRowUnit(i);
         }
       }
 
@@ -77,7 +88,7 @@ void checkGameInput() {
       if(unit != NULL && unit->unitType != NULL) {
         selectPreviewCard(unit->unitType->cardId);
         if(IsMouseButtonPressed(0)) {
-          TraceLog(LOG_WARNING, "Clicked player back Unit");
+          selectBackRowUnit(i);
         }
       }
     }
@@ -88,7 +99,7 @@ void checkGameInput() {
       if(unit != NULL && unit->unitType != NULL) {
         selectPreviewCard(unit->unitType->cardId);
         if(IsMouseButtonPressed(0)) {
-          TraceLog(LOG_WARNING, "Clicked ai front Unit");
+          selectFrontEnemyUnit(i);
         }
       }
 
@@ -100,9 +111,22 @@ void checkGameInput() {
       if(unit != NULL && unit->unitType != NULL) {
         selectPreviewCard(unit->unitType->cardId);
         if(IsMouseButtonPressed(0)) {
-          TraceLog(LOG_WARNING, "Clicked ai back Unit");
+          selectBackEnemyUnit(i);
         }
       }
     }
   }
+
+  if(CheckCollisionPointRec(mousePos, MAIN_DECK)) {
+    if(IsMouseButtonPressed(0)){
+      DrawCard();
+    }
+  }
+
+  if(CheckCollisionPointRec(mousePos, END_TURN)) {
+    if(IsMouseButtonPressed(0)){
+      endPlayerTurn();
+    }
+  }
+
 }

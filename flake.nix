@@ -35,7 +35,7 @@
 
         buildInputs = with pkgs; [ raylib libGLU glfw mesa xorg.libX11 ];
 
-        buildPhase = "cc main.c card.c player.c gamerender.c input.c ai.c -o game -lraylib -lGL -lm -lpthread -ldl -lrt -lX11";
+        buildPhase = "cc main.c card.c player.c gamerender.c input.c ai.c gamemode.c -o game -lraylib -lGL -lm -lpthread -ldl -lrt -lX11";
 
         installPhase = ''
           mkdir -p $out/bin
@@ -90,8 +90,14 @@
         buildInputs = with pkgs; [ emscripten raylib-web ];
 
         buildPhase = ''
+          mkdir -p cache
+          cp -r ${pkgs.emscripten}/share/emscripten/cache ./cache
+          mkdir -p src/resource
+          cp -r ${src/resource} src
+          export EM_CACHE=cache
           mkdir -p build
-          emcc -o build/game.html main.c -Os -Wall ${raylib-web}/lib/libraylib.a -I ${raylib-web}/includes -s USE_GLFW=3 -s ASYNCIFY -DPLATFORM_WEB
+          ls src/resource -lah
+          emcc  -o build/game.html main.c card.c player.c gamerender.c input.c ai.c gamemode.c -Os -Wall ${raylib-web}/lib/libraylib.a -I ${raylib-web}/includes -s USE_GLFW=3 -s ASYNCIFY -DPLATFORM_WEB --embed-file resource@src/resource
         '';
 
         installPhase = ''

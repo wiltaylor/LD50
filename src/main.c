@@ -1,14 +1,12 @@
-#include <stdio.h>
-#include "gamemode.h"
-#include "raylib.h"
-#include "card.h"
-#include "player.h"
-#include "gamerender.h"
-#include "constants.h"
-#include "input.h"
 #include "ai.h"
-
-static GameMode gameMode = MAINGAME_MODE;
+#include "card.h"
+#include "constants.h"
+#include "gamemode.h"
+#include "gamerender.h"
+#include "input.h"
+#include "player.h"
+#include "raylib.h"
+#include <stdio.h>
 
 const int cardPadding = 10;
 const int cardPaddingTop = 20;
@@ -23,31 +21,38 @@ void mainMenu_Update() {
   }
 }
 
-void mainMenu_Draw() {
-  DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
-}
-
 int main(void) {
 
   InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "LD50");
 
   SetExitKey(KEY_NULL);
 
+
   initCards();
-  initPlayer();
-  initAI();
+
+  setGameMode(INIT_MODE);
 
   SetTargetFPS(60);
 
   while (!WindowShouldClose()) {
 
-    switch (gameMode) {
-    case MAINMENU_MODE:
-      mainMenu_Update();
+    switch (getGameMode()) {
+    case INIT_MODE:
+      setGameMode(MAINGAME_MODE);
+
+      initPlayer();
+      initAI();
+
+      continue;
       break;
     case MAINGAME_MODE:
       checkGameInput();
       break;
+    case AITURN_MODE:
+      aiTurn();
+      break;
+    case GAMEOVER_MODE:
+      checkGameOverInput();
     default:
       break;
     }
@@ -60,12 +65,15 @@ int main(void) {
     BeginDrawing();
     ClearBackground(DARKGRAY);
 
-    switch (gameMode) {
-    case MAINMENU_MODE:
-      mainMenu_Draw();
-      break;
+    switch (getGameMode()) {
     case MAINGAME_MODE:
       renderGame();
+      break;
+    case AITURN_MODE:
+      renderGame();
+      break;
+    case GAMEOVER_MODE:
+      renderGameOver();
       break;
     default:
       break;

@@ -10,4 +10,4 @@ actions:
     command: "nix build .# && ./result/bin/game"
   - name: run-web
     description: "Builds and runs the web version"
-    command: "nix build .#web-game && python -m http.server 8000"
+    command: "nix build .#web-game && python -m http.server" 
